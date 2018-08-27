@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/ecrire', as: 'rails_admin'
   ActiveAdmin.routes(self)
   devise_for :users
   root to: 'pages#home'
