@@ -93,9 +93,6 @@ ActiveRecord::Schema.define(version: 2018_08_27_093334) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.string "level"
     t.boolean "admin", default: false, null: false
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
