@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_26_194313) do
+ActiveRecord::Schema.define(version: 2018_08_27_093334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 2018_08_26_194313) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "nom"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "historiques", force: :cascade do |t|
@@ -46,7 +52,6 @@ ActiveRecord::Schema.define(version: 2018_08_26_194313) do
     t.text "description"
     t.date "deadline"
     t.text "reponse"
-    t.string "status"
     t.boolean "heliast_anonyme"
     t.boolean "indecis_anonyme"
     t.datetime "created_at", null: false
@@ -55,10 +60,21 @@ ActiveRecord::Schema.define(version: 2018_08_26_194313) do
     t.bigint "heliast_id"
     t.bigint "reponse_indecis_id"
     t.bigint "reponse_heliast_id"
+    t.integer "new_status"
     t.index ["heliast_id"], name: "index_indecisions_on_heliast_id"
     t.index ["indecis_id"], name: "index_indecisions_on_indecis_id"
     t.index ["reponse_heliast_id"], name: "index_indecisions_on_reponse_heliast_id"
     t.index ["reponse_indecis_id"], name: "index_indecisions_on_reponse_indecis_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.text "message"
+    t.bigint "historique_id"
+    t.bigint "indecision_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["historique_id"], name: "index_notifications_on_historique_id"
+    t.index ["indecision_id"], name: "index_notifications_on_indecision_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -96,5 +112,7 @@ ActiveRecord::Schema.define(version: 2018_08_26_194313) do
   add_foreign_key "indecisions", "options", column: "reponse_indecis_id"
   add_foreign_key "indecisions", "users", column: "heliast_id"
   add_foreign_key "indecisions", "users", column: "indecis_id"
+  add_foreign_key "notifications", "historiques"
+  add_foreign_key "notifications", "indecisions"
   add_foreign_key "options", "indecisions"
 end
